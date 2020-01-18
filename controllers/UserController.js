@@ -19,43 +19,48 @@ class UserController {
 	store(req) { 
 		return new Promise((resolve,reject) => {
 			var courseController = new CourseController();
+			if(req.email.search("@kiit.ac.in")==-1)
+			{
+				reject({ success: false, message: "You must use kiit email"})
+			}
+			else
+			{
+				courseController.show(req.course)
+				.then((result) => {
+					if(result.data.course_seat > 0)
+					{
+						user.create({
+							name: req.name,
+							roll: req.roll,
+							email: req.email,
+							branch: req.branch,
+							year: req.year,
+							course: req.course,
+							contact: req.contact
+						})
+						.then(() => {
+							// Update course seat
+							courseController.update(req.course)
+							.catch(err => reject({ success: false, message: 'Course is filled up'}));
 
-			courseController.show(req.course)
-			.then((result) => {
-				if(result.data.course_seat > 0)
-				{
-					user.create({
-						name: req.name,
-						roll: req.roll,
-						email: req.email,
-						branch: req.branch,
-						year: req.year,
-						course: req.course,
-						contact: req.contact
-					})
-					.then(() => {
-						// Update course seat
-						courseController.update(req.course)
-						.catch(err => reject({ success: false, message: 'Course is filled up'}));
+							// Send mail
+							new MailController().sendUserRegistrationMail(req.email)
+							.catch(err => reject({ success: false, message: err}));
 
-						// Send mail
-						new MailController().sendUserRegistrationMail(req.email)
-						.catch(err => reject({ success: false, message: err}));
-
-						resolve({ success: true });
-					})
-					.catch((err) => {
-						reject ({ success: false, message: err.errors[0].message });
-					});
-					
-				}
-				else 
-				{
-					reject({ success: false, message: 'Course is filled up'})
-				}
-			})
-			.catch(err => reject({ success: false, message: err}));
-			
+							resolve({ success: true });
+						})
+						.catch((err) => {
+							reject ({ success: false, message: err.errors[0].message });
+						});
+						
+					}
+					else 
+					{
+						reject({ success: false, message: 'Course is filled up'})
+					}
+				})
+				.catch(err => reject({ success: false, message: err}));
+			}
 		});
 	}
 }
