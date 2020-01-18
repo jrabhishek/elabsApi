@@ -14,7 +14,6 @@ var User = sequelize.define('user',{
 		type: Sequelize.STRING,
 		allowNull: false,
 		validate: {
-			is: ["^[a-z]+$",'i'],
 			notNull: true
 		},
 		unique: false

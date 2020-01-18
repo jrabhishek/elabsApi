@@ -14,7 +14,6 @@ var Course = sequelize.define('course',{
 		type: Sequelize.STRING,
 		allowNull: false,
 		validate: {
-			is: ["^[a-z]+$",'i'],
 			notNull: true
 		},
 		unique: true
