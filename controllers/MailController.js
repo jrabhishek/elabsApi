@@ -10,6 +10,7 @@ class MailController {
 			var msg = {
 				to: receiverAddress,
 				from: senderAddress,
+				fromname: 'E Labs Electronics',
 				subject: 'Registration Confirmation Mail E Labs',
 				html: ejs.render(registrationContent,{
 					course: course
