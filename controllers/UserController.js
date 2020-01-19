@@ -45,7 +45,7 @@ class UserController {
 							.catch(err => reject({ success: false, message: 'Course is filled up'}));
 
 							// Send mail
-							new MailController().sendUserRegistrationMail(req.email)
+							new MailController().sendUserRegistrationMail(req.email,req.course)
 							.catch(err => reject({ success: false, message: err}));
 
 							resolve({ success: true });
