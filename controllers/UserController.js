@@ -32,6 +32,7 @@ class UserController {
 						user.create({
 							name: req.name,
 							roll: req.roll,
+							gender: req.gender,
 							email: req.email,
 							branch: req.branch,
 							year: req.year,

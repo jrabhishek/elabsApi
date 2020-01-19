@@ -18,7 +18,8 @@ router.post('/recruitment', (req,res) => {
 });
 
 router.post('/register', (req,res) => {
-	new UserController().store(req.body)
+	var userController = new UserController();
+	userController.store(req.body)
 		.then((result) => {
 			res.status(200).json(result);
 		})
@@ -42,13 +43,5 @@ router.get('/course', (req,res) => {
 		.catch(err => res.status(200).json(err));
 });
 
-
-router.post('/mail',(req,res) => {
-	new MailController().sendUserRegistrationMail(req.body.email)
-		.then((result) => {
-			res.status(200).json(result);
-		})
-		.catch(err => res.status(200).json(err));
-})
 
 module.exports = router;
