@@ -4,8 +4,7 @@ var sequelize = require('../config/db');
 // Course model
 var Course = sequelize.define('course',{
 	course_id: {
-		type: Sequelize.UUID,
-		defaultValue: Sequelize.UUIDV4,
+		type: Sequelize.STRING,
 		allowNull: false,
 		unique: true,
 		primaryKey: true
@@ -31,7 +30,7 @@ var Course = sequelize.define('course',{
 		type: Sequelize.STRING,
 		unique: false,
 		allowNull: false
-	}
+	},
 });
 
 module.exports = Course;
