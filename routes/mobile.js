@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
-
+var DeviceController = require("../controllers/DeviceController");
+var AttendanceController = require("../controllers/AttendanceController");
 router.post("/device", (req, res) => {
   var device = new DeviceController();
   device
@@ -13,8 +14,6 @@ router.post("/device", (req, res) => {
     });
 });
 
-var DeviceController = require("../controllers/DeviceController");
-
 router.get("/device/:devID", (req, res) => {
   var device = new DeviceController();
   device
@@ -25,4 +24,20 @@ router.get("/device/:devID", (req, res) => {
     .catch(err => res.status(500).json(err));
 });
 
+router.post("/attendance", (req, res) => {
+  var attendance = new AttendanceController();
+  attendance
+    .store(req)
+    .then(result => {
+      if (result.status == 200) {
+        res.status(200).json(result);
+      }
+    })
+    .catch(err => [res.status(500).json(err)]);
+});
+
+router.get("/attendance/:roll", (req, res) => {
+  var attendance = new AttendanceController();
+  attendance.index(req);
+});
 module.exports = router;

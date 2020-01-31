@@ -20,7 +20,7 @@ class DeviceController {
         .then(result => {
           if (result != null) {
             var authKey = result.authKey;
-            var course_id = authKey.substring(16);
+            var course_id = authKey.substring(22);
             var newAuthKey = authKeyGenerator.generateAuthKey(course_id);
             var roll = result.roll;
             var fcmToken = req.header("fcmToken");
@@ -101,7 +101,7 @@ class DeviceController {
               .show(registered_course)
               .then(res => {
                 if (res.success) {
-                  var course_id = res.data.course_id;
+                  var course_id = res.data.course_id.substring(2,4);
                   device
                     .create({
                       roll: roll,
@@ -150,6 +150,52 @@ class DeviceController {
             data: err
           })
         );
+    });
+  }
+  verify(req) {
+    return new Promise((resolve, reject) => {
+      var roll = req.roll;
+      var authKey = req.authKey;
+      console.log(roll, authKey);
+      device
+        .findOne({
+          where: {
+            roll: roll
+          },
+          attributes: ["authKey", "fcmToken"]
+        })
+        .then(result => {
+          if (result != null) {
+            if (authKey == result.authKey) {
+              resolve({
+                status: 200,
+                message: "Succesfully Verified AuthKey",
+                data: {
+                  fcmToken: result.fcmToken
+                }
+              });
+            } else {
+              resolve({
+                status: 404,
+                message: "Auth Key not valid",
+                data: null
+              });
+            }
+          } else {
+            resolve({
+              status: 404,
+              message: "Device not registered!",
+              data: null
+            });
+          }
+        })
+        .catch(err => {
+          reject({
+            status: 500,
+            message: "Internal Server Error!",
+            data: null
+          });
+        });
     });
   }
 }

@@ -3,7 +3,7 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const cors = require("cors");
 const logger = require("morgan");
-
+const dotenv = require("dotenv").config({ path: __dirname + "/.env" });
 // Initiate express
 const app = express();
 
