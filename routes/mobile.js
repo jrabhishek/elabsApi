@@ -38,6 +38,9 @@ router.post("/attendance", (req, res) => {
 
 router.get("/attendance/:roll", (req, res) => {
   var attendance = new AttendanceController();
-  attendance.index(req);
+  attendance
+    .index(req)
+    .then(data => res.json(data))
+    .catch("fail!");
 });
 module.exports = router;

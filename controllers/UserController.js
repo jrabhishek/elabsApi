@@ -105,6 +105,7 @@ class UserController {
                   resolve({ success: true });
                 })
                 .catch(err => {
+                  console.log(err);
                   reject({ success: false, message: err.errors[0].message });
                 });
             } else {
