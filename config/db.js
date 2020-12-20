@@ -2,7 +2,7 @@ const Sequelize = require("sequelize");
 const sequelize = new Sequelize("sql12383155", "sql12383155", "UtkK3xHEdr", {
   host: "sql12.freesqldatabase.com",
   dialect: "mysql",
-  logging: true
+  logging: false
 });
 //const sequelize = new Sequelize('sqlite:elabs.db');
 
